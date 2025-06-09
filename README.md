@@ -9,6 +9,14 @@ En la tarea se plantea la creación de una ruta óptima con un mapa dado para un
 - Entrada: Superior derecha.
 - Salida: Inferior izquierda.
 
+
+## Tabla de contenido
+- [Modelo del robot](#modelo-del-robot)
+- [Mapas](#mapas)
+- [ Probabilistic Roadmap Method (PRM)](#probabilistic-roadmap-method)
+- [Rapidly-Exploring Random Tree](#Rapidly-Exploring-Random-Tree)
+- [Conclusiones y dificultades presentadas](#conclusiones-y-dificultades-presentadas)
+
 ## Modelo del robot
 Primero se hace la creación del modelo cinemático del robot en MATLAB. El DR12 es un robot móvil con dos ruedas de tracción y una rueda loca de dirección. Para el modelo se necesita la trocha del robot y el radio de sus ruedas, datos que se obtienen del modelo de Coppelia. Encontramos que el radio de cada rueda es de 0.086 metros, con una trocha de 0.154 metros. El modelo cinemático del modelo se da por las dos siguientes ecuaciones, las cuales representan la velocidad lineal y angular del robot, respectivamente.
 
@@ -37,7 +45,7 @@ Para calcular el valor en metros, se usa una equivalencia de $539.63\ px/m$. Con
 </div>
 
 
-## Probabilistic Roadmap Method (PRM)
+## Probabilistic Roadmap Method
 
 Se implementó el método de planeación de ruta PRM. El procedimiento comenzó con la carga de un mapa previamente inflado para representar las zonas de obstáculos con un margen de seguridad adecuado. A partir de este mapa, se generó un grafo de rutas posibles utilizando el objeto *mobileRobotPRM*.
 
@@ -81,7 +89,7 @@ costeTotal = sum(vecnorm(diff(path), 2, 2))
 
 El valor obtenido para esta función fue de $5.3293$ metros, representando la longitud total de la ruta planificada.
 
-## Rapidly-Exploring Random Tree (RRT)
+## Rapidly-Exploring Random Tree
 
 Siguiendo con los objetivos, se implementó el método de planeación de rutas RRT. Este algoritmo expande aleatoriamente el espacio de búsqueda desde el punto de inicio hasta alcanzar el objetivo, evitando obstáculos.
 
