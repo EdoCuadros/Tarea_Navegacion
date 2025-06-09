@@ -18,15 +18,23 @@ $$ w = \frac{r}{2l} \dot{\theta_1} - \frac{r}{2l} \dot{\theta_2} = \frac{0.086}{
 
 ## Mapas
 
-[[INSERTAR MAPA ]]
+<div align="center">
+  <img src="imgs/mapa_original.jpg" alt="Mapa original" width="600px">
+</div>
 
 El mapa que se nos da tiene una resolución de 16 celdas por metro. Como se puede ver en el mapa 1, eso equivale a un mapa de aproximadamente $3.2$ x $3.2$ metros. Para calcular el factor de inflado, se tendrán en cuenta los posibles caminos que puede tomar el robot. En la siguiente figura se puede ver la magnitud en pixeles de algunos.
 
-[[INSERTAR MAPA CON DISTANCIAS]]
+<div align="center">
+  <img src="imgs/mapa_distancias.png" alt="Figura 1:Mapa con distancias" width="600px">
+</div>
+
 
 Para calcular el valor en metros, se usa una equivalencia de $539.63\ px/m$. Con esto se puede ver que el camino más angosto que podría tener el robot es de $30.81\ cm$ aproximadamente. Ya que el robot tiene un ancho de 15.8 cm, se encontrará el factor con la relación entre estas dos medidas. El mapa inflado se puede ver en la *Figura 2*.
 
-[[INSERTAR MAPA INFLADO]]
+
+<div align="center">
+  <img src="imgs/mapa_inflado.jpg" alt="Mapa inflado" width="600px">
+</div>
 
 
 ## Probabilistic Roadmap Method (PRM)
@@ -39,14 +47,14 @@ prm = mobileRobotPRM(inflateMap)
 
 Para la construcción del grafo, se configuraron dos parámetros clave: el número máximo de nodos *NumNodes* fue establecido en $10000$, lo que permitió una representación densa del espacio de trabajo; y la distancia máxima de conexión entre nodos *ConnectionDistance* se fijó en $0.05\ metros$, restringiendo la generación de aristas a aquellas que conectaran nodos cercanos.
 
-```mathematica
+```C
 prm.NumNodes = 10000;
 prm.ConnectionDistance = 0.05;
 ```
  
  Una vez generado el grafo, se procedió a encontrar la trayectoria óptima utilizando la función *findpath*. Para este mapa, el punto de inicio esta localizado en $(3.2,3.0)$ y la meta en $(0.2, 0.0)$.
 
- ```mathematica
+ ```C
 startLocation = [3.2 3];
 endLocation = [0.2 0];
 path = findpath(prm, startLocation, endLocation)
@@ -54,12 +62,20 @@ path = findpath(prm, startLocation, endLocation)
 
 El resultado fue una secuencia de puntos que representan la ruta más corta conectando el origen con el destino, evitando colisiones con los obstáculos presentes en el entorno. El mapa probabilistico y el mapa de ocupación con la ruta pintada se pueden ver en *Figura 3* y *Figura 4* respectivamente.
 
-[[INSERTAR MAPA PROBABILISTIC]]
-[[INSERTAR MAPA DE OCUPACIÓN CON RUTA PRM]]
+
+<div align="center">
+  <img src="imgs/mapa_probabilistico.jpg" alt="Figura 3: Mapa probabilístico" width="600px">
+</div>
+
+
+<div align="center">
+  <img src="imgs/mapa_original_prm.jpg" alt="Figura 4: Mapa original con ruta PRM" width="600px">
+</div>
+
 
 Para cuantificar la eficiencia de la ruta, se utilizó como función de costo la distancia total recorrida a lo largo del trayecto, calculada como la suma de las distancias euclidianas entre puntos consecutivos del camino. 
 
- ```mathematica
+ ```C
 costeTotal = sum(vecnorm(diff(path), 2, 2))
 ```
 
@@ -71,7 +87,7 @@ Siguiendo con los objetivos, se implementó el método de planeación de rutas R
 
 Para definir el espacio de trabajo del robot, se utilizó el espacio de estados *SE(2)*, que considera las posiciones en el plano y la orientación. Los límites del espacio se configuraron de acuerdo con el napa inflado *inflatedMap*, el cual incorpora márgenes de seguridad alrededor de los obstáculos:
 
- ```mathematica
+ ```C
 stateSpace = stateSpaceSE2;
 stateSpace.StateBounds = [inflateMap.XWorldLimits; 
                           inflateMap.YWorldLimits; 
@@ -80,7 +96,7 @@ stateSpace.StateBounds = [inflateMap.XWorldLimits;
 
 A continuación, se definió un validador de estados basado en el mapa inflado, con una distancia de validación de $0.1$ metros para verificar si un segmento de trayectoria es libre de colisiones:
 
-```mathematica
+```C
 validator = validatorOccupancyMap(stateSpace);
 validator.Map = inflateMap;
 validator.ValidationDistance = 0.1;
@@ -88,7 +104,7 @@ validator.ValidationDistance = 0.1;
 
 Luego, se configuró el planificador RRT, estableciendo una distancia máxima de conexión de $2.0$ metros entre nodos del árbol de búsqueda y un límite de $3000$ iteraciones para permitir una exploración amplia del espacio:
 
-```mathematica
+```C
 planner = plannerRRT(stateSpace, validator);
 planner.MaxConnectionDistance = 2.0;
 planner.MaxIterations = 3000;
@@ -96,8 +112,12 @@ planner.MaxIterations = 3000;
 
 Con la configuración anterior, se ejecutó el proceso de planificación de ruta desde y hasta los mismos puntos, ambos con orientación 0 en radianes. La ruta calculada se puede ver en la *Figura 5*.
 
-[[INSERTAR MAPA CON RUTA RRT]]
-```mathematica
+
+<div align="center">
+  <img src="imgs/mapa_inflado_rrt.jpg" alt="Figura 5:Mapa inflado con ruta RRT" width="600px">
+</div>
+
+```C
 [pthObj, solnInfo] = plan(planner, [startLocation 0], [endLocation 0]);
 ```
 
@@ -109,7 +129,7 @@ A continuación se realiza una simulación tomando la ruta PRM calculada anterio
 
 Primero, se inicializó el controlador y se configuraron sus parámetros fundamentales. Se estableció una velocidad lineal deseada de $0.6$ metros por segundo, y una velocidad angular máxima de $2$ radianes por segundo.
 
-```mathematica
+```C
 controller = controllerPurePursuit;
 release(controller);
 controller.Waypoints = path;
@@ -119,7 +139,7 @@ controller.MaxAngularVelocity = 2.0;
 
 El punto de inicio y el objetivo fueron definidos como el primer y último punto de la ruta generada. La orientación inicial se fijó en $\pi$ radianes, lo que representa que el robot comienza mirando hacia la izquierda en el mapa.
 
-```mathematica
+```C
 robotInitialLocation = path(1,:);
 robotGoal = path(end,:);
 initialOrientation = pi;
@@ -128,7 +148,7 @@ robotCurrentPose = [robotInitialLocation initialOrientation]';
 
 A continuación, se estableció la conexión con CoppeliaSim mediante la API remota. Se inició la simulación de forma **sincrónica**, lo cual permite avanzar el tiempo de simulación paso a paso desde MATLAB.
 
-```mathematica
+```C
 vrep = remApi('remoteApi');
 vrep.simxFinish(-1);
 id = vrep.simxStart('127.0.0.1',19999,true,true,5000,5);
@@ -138,14 +158,14 @@ vrep.simxStartSimulation(id, vrep.simx_opmode_blocking);
 
 Se obtuvo el handle del robot en la escena y se comenzaron a recibir actualizaciones de su posición y orientación.
 
-```mathematica
+```C
 [~, robotHandle] = vrep.simxGetObjectHandle(id, 'dr12', vrep.simx_opmode_blocking);
 vrep.simxGetObjectPosition(id, robotHandle, -1, vrep.simx_opmode_streaming);
 ```
 
 Durante el ciclo de control, se generaban los comandos de velocidad mediante el controlador, y se convertían en velocidades para las ruedas izquierda y derecha. Estas velocidades fueron enviadas a CoppeliaSim mediante señales. Estas señales se asociaban a velocidades de cada motor mediante un script de *lua* asociado al modelo del robot en Coppelia. Esto debido a que no se encotró manera de que el robot se moviera con datos transmitidos usando el método *simxSetJointTargetVelocity*.
 
-```mathematica
+```C
 [v, omega] = controller(robotCurrentPose);
 
 left_velocity  = (v - (dist_ruedas/2)*omega) / radio_rueda;
