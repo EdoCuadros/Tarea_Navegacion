@@ -21,9 +21,11 @@ En la tarea se plantea la creación de una ruta óptima con un mapa particular, 
 El desarrollo de esta primera parte se tiene en el programa [tarea2](./tarea2.mlx).
 Primero se hace la creación del modelo cinemático del robot en MATLAB. El DR12 es un robot móvil con dos ruedas de tracción y una rueda loca de dirección. Para el modelo se necesita la trocha del robot y el radio de sus ruedas, datos que se obtienen del modelo de Coppelia. Encontramos que el radio de cada rueda es de $0.086$ metros, con una trocha de $0.154$ metros. El modelo cinemático del modelo se da por las dos siguientes ecuaciones, las cuales representan la velocidad lineal y angular del robot, respectivamente.
 
-$$ v = \frac{r}{2} \dot{\theta_1} + \frac{r}{2} \dot{\theta_2} = \frac{0.086}{2} \dot{\theta_1} + \frac{0.086}{2} \dot{\theta_2}$$
+$$ v = \frac{r}{2} \dot{\theta_1} + \frac{r}{2} \dot{\theta_2} = \frac{0.086}{2} \dot{\theta_1} + \frac{0.086}{2} \dot{\theta_2}$$ 
 
-$$ w = \frac{r}{2l} \dot{\theta_1} - \frac{r}{2l} \dot{\theta_2} = \frac{0.086}{2*0.154} \dot{\theta_1} - \frac{0.086}{2*0.154} \dot{\theta_2}$$
+$$ w = \frac{r}{2l} \dot{\theta_1} - \frac{r}{2l} \dot{\theta_2} = \frac{0.086}{20.154} \dot{\theta_1} - \frac{0.086}{20.154} \dot{\theta_2} $$
+
+
 
 ## Mapas
 
