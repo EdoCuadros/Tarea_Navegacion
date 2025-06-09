@@ -19,7 +19,7 @@ En la tarea se plantea la creación de una ruta óptima con un mapa dado para un
 
 ## Modelo del robot
 El desarrollo de esta primera parte se tiene en el programa [tarea2](./tarea2.mlx).
-Primero se hace la creación del modelo cinemático del robot en MATLAB. El DR12 es un robot móvil con dos ruedas de tracción y una rueda loca de dirección. Para el modelo se necesita la trocha del robot y el radio de sus ruedas, datos que se obtienen del modelo de Coppelia. Encontramos que el radio de cada rueda es de 0.086 metros, con una trocha de 0.154 metros. El modelo cinemático del modelo se da por las dos siguientes ecuaciones, las cuales representan la velocidad lineal y angular del robot, respectivamente.
+Primero se hace la creación del modelo cinemático del robot en MATLAB. El DR12 es un robot móvil con dos ruedas de tracción y una rueda loca de dirección. Para el modelo se necesita la trocha del robot y el radio de sus ruedas, datos que se obtienen del modelo de Coppelia. Encontramos que el radio de cada rueda es de $0.086$ metros, con una trocha de $0.154$ metros. El modelo cinemático del modelo se da por las dos siguientes ecuaciones, las cuales representan la velocidad lineal y angular del robot, respectivamente.
 
 $$ v = \frac{r}{2} \dot{\theta_1} + \frac{r}{2} \dot{\theta_2} = \frac{0.086}{2} \dot{\theta_1} + \frac{0.086}{2} \dot{\theta_2}$$
 
@@ -31,14 +31,14 @@ $$ w = \frac{r}{2l} \dot{\theta_1} - \frac{r}{2l} \dot{\theta_2} = \frac{0.086}{
   <img src="imgs/mapa_original.jpg" alt="Mapa original" width="600px">
 </div>
 
-El mapa que se nos da tiene una resolución de 16 celdas por metro. Como se puede ver en el mapa 1, eso equivale a un mapa de aproximadamente $3.2$ x $3.2$ metros. Para calcular el factor de inflado, se tendrán en cuenta los posibles caminos que puede tomar el robot. En la siguiente figura se puede ver la magnitud en pixeles de algunos.
+El mapa que se nos da tiene una resolución de 16 celdas por metro. Como se puede ver en la *Figura 1*, eso equivale a un mapa de aproximadamente $3.2$ x $3.2$ metros. Para calcular el factor de inflado, se tendrán en cuenta los posibles caminos que puede tomar el robot. En la siguiente figura se puede ver la magnitud en pixeles de algunos.
 
 <div align="center">
   <img src="imgs/mapa_distancias.png" alt="Figura 1:Mapa con distancias" width="600px">
 </div>
 
 
-Para calcular el valor en metros, se usa una equivalencia de $539.63\ px/m$. Con esto se puede ver que el camino más angosto que podría tener el robot es de $30.81\ cm$ aproximadamente. Ya que el robot tiene un ancho de 15.8 cm, se encontrará el factor con la relación entre estas dos medidas. El mapa inflado se puede ver en la *Figura 2*.
+Para calcular el valor en metros, se usa una equivalencia de $539.63$ pixeles por metro. Con esto se puede ver que el camino más angosto que podría tener el robot es de $30.81\ cm$ aproximadamente. Ya que el robot tiene un ancho de 15.8 cm, se encontrará el factor con la relación entre estas dos medidas. El mapa inflado se puede ver en la *Figura 2*.
 
 
 <div align="center">
@@ -133,8 +133,13 @@ Con la configuración anterior, se ejecutó el proceso de planificación de ruta
 El coste fue calculado de igual forma que en el anterior método, teniendo un valor de $7.5199$ metros.
 
 ## Simulación MATLAB y CoppeliaSim
-El código de esta segunda parte se puede ver en [path_coppelia](./path_coppelia.mlx)
-Se comenzó con la importación del mapa y el ajuste de las distancias según la resolución requerida. A su vez se importó el modelo del robot y se ubicó en la posición de inicio. Esto se puede ver en la *Figura 6*
+El código de esta segunda parte se puede ver en [path_coppelia](./path_coppelia.mlx).
+Se comenzó con la importación del mapa y el ajuste de las distancias según la resolución requerida. A su vez se importó el modelo del robot y se ubicó en la posición de inicio. Esto se puede ver en la *Figura 6*.
+
+<div align="center">
+  <img src="imgs/foto_coppelia.png" alt="Figura 6: Mapa desde arriba" width="600px">
+</div>
+
 A continuación se realiza una simulación tomando la ruta PRM calculada anteriormente en MATLAB. Para este fin, se utilizó el controlador *controllerPurePursuit*, el cual permite generar comandos de velocidad lineal y angular que guían al robot a lo largo de la secuencia de puntos. Para esto se usa el algoritmo *Path Following for a Differential Drive Robot* de MATLAB.
 
 Primero, se inicializó el controlador y se configuraron sus parámetros fundamentales. Se estableció una velocidad lineal deseada de $0.6$ metros por segundo, y una velocidad angular máxima de $2$ radianes por segundo.
