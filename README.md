@@ -2,7 +2,7 @@
 
 ## Autor: Eduardo Cuadros Montealegre
 
-En la tarea se plantea la creación de una ruta óptima con un mapa dado para una posterior simulación de misión de robot con ruedas. Se tuvieron las siguientes restricciones:
+En la tarea se plantea la creación de una ruta óptima con un mapa particular, para luego realizar una simulación de misión de un robot. Se tuvieron las siguientes restricciones:
 
 - Robot a usar: DR12.
 - Resolución de mapa: 16 celdas / metro.
