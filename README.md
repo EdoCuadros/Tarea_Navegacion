@@ -14,7 +14,7 @@ En la tarea se plantea la creación de una ruta óptima con un mapa dado para un
 - [Modelo del robot](#modelo-del-robot)
 - [Mapas](#mapas)
 - [ Probabilistic Roadmap Method (PRM)](#probabilistic-roadmap-method)
-- [Rapidly-Exploring Random Tree](#Rapidly-Exploring-Random-Tree)
+- [Rapidly-Exploring Random Tree (RRT)](#Rapidly-Exploring-Random-Tree)
 - [Conclusiones y dificultades presentadas](#conclusiones-y-dificultades-presentadas)
 
 ## Modelo del robot
