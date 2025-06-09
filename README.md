@@ -193,6 +193,8 @@ vrep.simxSynchronousTrigger(id);
 
 Una vez alcanzado el objetivo, se enviaron señales de parada a los motores y se finalizó la simulación en Coppelia. El movimiento y ruta del robot usando el controlador mencionado se visualizó en MATLAB y se puede ver en la *Video 1*. El video del funcionamiento en Coppelia se puede ver en *Video 2*.
 
+[Video 1: Ruta del robot con el controlador PurePursuit en MATLAB](video_controller_matlab.mp4)
+
 ## Conclusiones y dificultades presentadas
 
 En general el desarrollo de los objetivos se hizo de forma adecuada y sin mayores complicaciones para la parte de calculos en MATLAB. Se vuelve muy importante trabajar de la mano con la documentación de la aplicación para poder saber y entender cómo funciona cada método. 
