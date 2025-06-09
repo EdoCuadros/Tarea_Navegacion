@@ -18,6 +18,7 @@ En la tarea se plantea la creación de una ruta óptima con un mapa dado para un
 - [Conclusiones y dificultades presentadas](#conclusiones-y-dificultades-presentadas)
 
 ## Modelo del robot
+El desarrollo de esta primera parte se tiene en el programa [tarea2](./tarea2.mlx).
 Primero se hace la creación del modelo cinemático del robot en MATLAB. El DR12 es un robot móvil con dos ruedas de tracción y una rueda loca de dirección. Para el modelo se necesita la trocha del robot y el radio de sus ruedas, datos que se obtienen del modelo de Coppelia. Encontramos que el radio de cada rueda es de 0.086 metros, con una trocha de 0.154 metros. El modelo cinemático del modelo se da por las dos siguientes ecuaciones, las cuales representan la velocidad lineal y angular del robot, respectivamente.
 
 $$ v = \frac{r}{2} \dot{\theta_1} + \frac{r}{2} \dot{\theta_2} = \frac{0.086}{2} \dot{\theta_1} + \frac{0.086}{2} \dot{\theta_2}$$
@@ -132,6 +133,7 @@ Con la configuración anterior, se ejecutó el proceso de planificación de ruta
 El coste fue calculado de igual forma que en el anterior método, teniendo un valor de $7.5199$ metros.
 
 ## Simulación MATLAB y CoppeliaSim
+El código de esta segunda parte se puede ver en [path_coppelia](./path_coppelia.mlx)
 Se comenzó con la importación del mapa y el ajuste de las distancias según la resolución requerida. A su vez se importó el modelo del robot y se ubicó en la posición de inicio. Esto se puede ver en la *Figura 6*
 A continuación se realiza una simulación tomando la ruta PRM calculada anteriormente en MATLAB. Para este fin, se utilizó el controlador *controllerPurePursuit*, el cual permite generar comandos de velocidad lineal y angular que guían al robot a lo largo de la secuencia de puntos. Para esto se usa el algoritmo *Path Following for a Differential Drive Robot* de MATLAB.
 
